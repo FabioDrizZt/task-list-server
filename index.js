@@ -1,19 +1,15 @@
 const express = require('express');
+const listViewRouter = require('./list-view-router');
+const listEditRouter = require('./list-edit-router');
+
 const app = express();
 
-// Lista de tareas
-const tasks = [
-    {
-        id: "123456",
-        isCompleted: false,
-        description: "Walk the dog"
-    }
-];
+// Parsear el cuerpo de las solicitudes como JSON
+app.use(express.json());
 
-// Ruta para obtener la lista de tareas
-app.get('/tasks', (req, res) => {
-    res.json(tasks);
-});
+// Usar los routers
+app.use('/view', listViewRouter);
+app.use('/edit', listEditRouter);
 
 // Puerto en el que escuchará el servidor
 const PORT = process.env.PORT || 3000;
