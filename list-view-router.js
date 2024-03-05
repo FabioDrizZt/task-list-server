@@ -10,6 +10,24 @@ const tasks = [
     }
 ];
 
+// Middleware para validar parámetros
+const validateParams = (req, res, next) => {
+    if (!req.params.id) {
+        return res.status(400).json({ error: "Parámetro 'id' inválido" });
+    }
+    next();
+};
+
+// Ruta para obtener la tarea completa o incompleta según el ID proporcionado
+router.get('/:id', validateParams, (req, res) => {
+    const taskId = req.params.id;
+    const task = tasks.find(task => task.id === taskId);
+    if (!task) {
+        return res.status(404).json({ error: "Tarea no encontrada" });
+    }
+    res.json(task);
+});
+
 // Ruta para obtener las tareas completas
 router.get('/completed', (req, res) => {
     const completedTasks = tasks.filter(task => task.isCompleted);

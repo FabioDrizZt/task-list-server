@@ -10,6 +10,18 @@ let tasks = [
     }
 ];
 
+// Middleware para validar el cuerpo de las solicitudes POST y PUT
+const validateTaskData = (req, res, next) => {
+    if (Object.keys(req.body).length === 0) {
+        return res.status(400).json({ error: "El cuerpo de la solicitud no puede estar vacío" });
+    }
+    const { id, isCompleted, description } = req.body;
+    if (!id || !isCompleted || !description) {
+        return res.status(400).json({ error: "La información de la tarea es inválida o faltan atributos" });
+    }
+    next();
+};
+
 // Ruta para crear una tarea
 router.post('/create', (req, res) => {
     const newTask = req.body;
